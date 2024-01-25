@@ -1,0 +1,42 @@
+version: '3.9'
+services:
+  dev:
+    container_name: server-dev
+    image: server-dev:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229
+    networks:
+      - server-network
+    volumes:
+      - .:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    environment:
+      DATABASE_URI: ${DATABASE_URI}
+
+  mongodb:
+    image: mongo:latest
+    container_name: server-mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=${DATABASE_NAME}
+      - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASS}
+    networks:
+      - server-network
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo ${DATABASE_URI}/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+networks:
+  server-network:
