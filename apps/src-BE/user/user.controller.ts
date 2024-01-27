@@ -7,7 +7,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-
 import { CreateUserInput } from './user.input';
 import { UserService } from './user.service';
 

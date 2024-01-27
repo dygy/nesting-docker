@@ -1,17 +1,17 @@
 version: '3.9'
 services:
-  dev:
-    container_name: server-dev
+  nest:
+    container_name: nest-back
     image: server-dev:1.0.0
     build:
       target: development
-      dockerfile: ./Dockerfile
+      dockerfile: apps/src-BE/Dockerfile
     command: npm run start
     ports:
       - ${PORT}:3000
       - 9229:9229
     volumes:
-      - .:/usr/src/app
+      - .:/usr/src/app/BE
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -27,6 +27,24 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    networks:
+      - backend
+
+  remix:
+    container_name: remix-front
+    image: remix-front:1.0.0
+    build:
+      target: development
+      dockerfile: ./apps/src-FE/Dockerfile
+    command: npm run start
+    ports:
+      - 8080:8080
+      - 9221:9221
+    volumes:
+      - .:/usr/src/app/FE
+    restart: unless-stopped
+    environment:
+      API_URL: ${API_URL}
     networks:
       - backend
 
