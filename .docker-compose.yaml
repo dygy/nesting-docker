@@ -11,7 +11,7 @@ services:
       - ${PORT}:3000
       - 9229:9229
     volumes:
-      - .:/usr/src/app/BE
+      - .:/usr/src/app/src-BE
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -40,7 +40,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - .:/usr/src/app/FE
+      - .:/usr/src/app/src-FE
     restart: unless-stopped
     environment:
       API_URL: ${API_URL}
