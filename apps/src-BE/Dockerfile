@@ -6,9 +6,10 @@ COPY . .
 #  Copy package.json
 COPY package*.json ./
 RUN npm install -g pnpm
-RUN pnpm install
+RUN npm install -g turbo
+RUN pnpm --filter @nesting/src-be install
 
 EXPOSE 3000
 
 RUN cd apps/src-BE
-RUN npm run build
+RUN turbo run build --scope='@nesting/src-be'
