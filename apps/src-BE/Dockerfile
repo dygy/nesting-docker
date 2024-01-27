@@ -9,5 +9,4 @@ RUN npm install -g pnpm
 RUN npm install -g turbo
 RUN cd apps/src-BE pnpm --filter @nesting/src-be install
 EXPOSE 3000
-
 RUN turbo run build --scope='@nesting/src-be'
